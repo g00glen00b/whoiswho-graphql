@@ -1,0 +1,248 @@
+type Query {
+    allPeople(page: Int!, size: Int!, sort: PersonSort): [Person]
+    peopleCount: Int
+    person(personId: ID!): Person
+    allStudyMaterial(page: Int!, size: Int!, withUnapproved: Boolean, sort: StudyMaterialSort): [StudyMaterial]
+    studyMaterialCount(withUnapproved: Boolean): Int
+    studyMaterial(studyMaterialId: ID!): StudyMaterial
+    allStudyMaterialTypes: [StudyMaterialType]
+    allStudyMaterialComplexities: [StudyMaterialComplexity]
+    allTeams(page: Int!, size: Int!, sort: TeamSort): [Team]
+    allSkills(search: String, page: Int!, size: Int!, sort: SkillSort): [String]
+    skillCount(search: String): Int
+    teamCount: Int
+    team(teamId: ID!): Team
+    allPersonHiscores(skill: String!, page: Int!, size: Int!): [PersonHiscore]
+    personHiscoresCount(skill: String!): Int
+    allTeamHiscores(skill: String!, page: Int!, size: Int!): [TeamHiscore]
+    teamHiscoresCount(skill: String!): Int
+    currentUser: User
+}
+
+type Mutation {
+    createUser(userInfo: CreateUserInput!, personInfo: CreatePersonInput!): User
+    updatePassword(input: UpdatePasswordInput!): User
+    updatePerson(input: UpdatePersonInput!): Person
+    updateAvatar(avatar: Upload!): Person
+    createTeam(name: String!): Team
+    createStudyMaterial(input: CreateStudyMaterialInput!): StudyMaterial
+    login(email: String!, password: String!): User
+    approveStudyMaterial(studyMaterialId: ID!): StudyMaterial
+    unapproveStudyMaterial(studyMaterialId: ID!): StudyMaterial
+    review(input: CreateStudyMaterialReviewInput!): StudyMaterialReview
+    joinTeam(teamId: ID!): Team
+    leaveTeam(teamId: ID!): Team
+    deleteUser(personId: ID!): Boolean
+    deleteTeam(teamId: ID!): Boolean
+    approveTeamMember(teamId: ID!, personId: ID!): Team
+    replaceTeamLeader(teamId: ID!, personId: ID!): Team
+    promotePerson(personId: ID!): Person
+    unpromotePerson(personId: ID!): Person
+}
+
+type Person {
+    id: ID
+    firstName: String
+    lastName: String
+    avatar: String
+    email: String
+    title: String
+    employmentDate: Date
+    telephoneNumber: String
+    reviews: [StudyMaterialReview]
+    reviewCount: Int
+    skills(size: Int, sort: PersonSkillSort): [PersonHiscore]
+    roles: [String]
+    teams(withUnapproved: Boolean): [TeamMember]
+    teamCount: Int
+}
+
+type User {
+    token: String
+    person: Person
+}
+
+type StudyMaterial {
+    id: ID
+    name: String
+    type: StudyMaterialType
+    skills: [String]
+    duration: Duration
+    complexity: StudyMaterialComplexity
+    approved: Boolean
+    averageRating: Int
+    reviews: [StudyMaterialReview]
+    completed: Boolean
+    completedCount: Int
+}
+
+type StudyMaterialReview {
+    rating: Int
+    person: Person
+    review: String
+    completionDate: Date
+    studyMaterial: StudyMaterial
+}
+
+type Team {
+    id: ID
+    name: String
+    leader: Person
+    members(withUnapproved: Boolean): [TeamMember]
+    memberCount(withUnapproved: Boolean): Int
+    skills(size: Int, sort: TeamSkillSort): [TeamHiscore]
+    isLeader: Boolean
+    isMember: Boolean
+}
+
+type TeamMember {
+    person: Person
+    approved: Boolean
+}
+
+type Duration {
+    toHours: Int
+    toMinutes: Int
+    toSeconds: Int
+}
+
+type Date {
+    formatString(format: String!): String
+    iso: String
+}
+
+type StudyMaterialType {
+    code: String
+    description: String
+}
+
+type StudyMaterialComplexity {
+    code: String
+    description: String
+}
+
+type PersonHiscore {
+    person: Person
+    skillName: String
+    level: Int
+    experience: Int
+    maxLevel: Boolean
+    progress: Float
+}
+
+type TeamHiscore {
+    team: Team
+    skillName: String
+    level: Int
+    experience: Int
+    maxLevel: Boolean
+    progress: Float
+}
+
+enum PersonSkillSortField {
+    NAME
+    EXPERIENCE
+}
+
+enum PersonSortField {
+    LAST_NAME
+    EMPLOYMENT_DATE
+}
+
+enum StudyMaterialSortField {
+    NAME
+    TYPE
+    COMPLEXITY
+    DURATION
+}
+
+enum TeamSortField {
+    NAME
+}
+
+enum TeamSkillSortField {
+    NAME
+    EXPERIENCE
+}
+
+enum SkillSortField {
+    NAME
+}
+
+enum Order {
+    ASC
+    DESC
+}
+
+input CreateUserInput {
+    email: String!
+    password: String!
+}
+
+input CreatePersonInput {
+    firstName: String
+    lastName: String
+    employmentDate: String
+    telephoneNumber: String
+    title: String
+}
+
+input CreateStudyMaterialInput {
+    name: String!
+    type: String!
+    skills: [String]!
+    complexity: String!
+    durationHours: Int!
+}
+
+input CreateStudyMaterialReviewInput {
+    id: ID!
+    completionDate: String
+    rating: Int
+    review: String
+}
+
+input PersonSkillSort {
+    field: PersonSkillSortField
+    order: Order
+}
+
+input PersonSort {
+    field: PersonSortField
+    order: Order
+}
+
+input StudyMaterialSort {
+    field: StudyMaterialSortField
+    order: Order
+}
+
+input TeamSort {
+    field: TeamSortField
+    order: Order
+}
+
+input TeamSkillSort {
+    field: TeamSkillSortField
+    order: Order
+}
+
+input SkillSort {
+    field: SkillSortField
+    order: Order
+}
+
+input UpdatePersonInput {
+    firstName: String
+    lastName: String
+    employmentDate: String
+    telephoneNumber: String
+    title: String
+}
+
+input UpdatePasswordInput {
+    originalPassword: String!
+    newPassword: String!
+}
+
+scalar Upload
