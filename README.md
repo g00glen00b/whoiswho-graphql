@@ -1,4 +1,4 @@
-# Spring boot + React + GraphQL Example
+Spring boot + React + GraphQL Example
 =======================================
 
 This project contains a full example of an application developed using [GraphQL](https://graphql.org/) within the Java ecosystem.
