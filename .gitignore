@@ -9,7 +9,7 @@ dist/
 nbdist/
 nbbuild/
 nbproject/private/
-filestorage/
+filestorage/*
 !filestorage/default.png
 *.iml
 *.iws
