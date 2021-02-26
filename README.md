@@ -29,11 +29,11 @@ To run the backend, you need JDK 11+ and you can use the following command:
 ```
 cd whoiswho-backend
 WHOISWHO_SECURITY_PASSWORDSTRENGTH=10
-WHOISHWO_SECURITY_TOKENSECRET=myspecialsecret 
+WHOISWHO_SECURITY_TOKENSECRET=myspecialsecret 
 ./mvnw spring-boot:run
 ```
 
-To run the frontnd, you need Node.js 12+ and you can use the following command:
+To run the frontend, you need Node.js 12+ and you can use the following command:
 
 ```
 cd whoiswho-frontend
