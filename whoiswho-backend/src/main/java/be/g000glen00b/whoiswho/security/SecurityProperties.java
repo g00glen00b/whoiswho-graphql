@@ -13,7 +13,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class SecurityProperties {
     /**
-     * Amound of hashing iterations, where formula is 2^passwordStrength iterations
+     * Amount of hashing iterations, where formula is 2^passwordStrength iterations
      */
     private final int passwordStrength;
     /**
